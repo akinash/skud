@@ -10,9 +10,9 @@ class RawEventResource(resources.ModelResource):
     action_type = fields.Field(column_name='Вход и выход', attribute='action_type')
     card_number = fields.Field(column_name='Карта', attribute='card_number')
     status = fields.Field(column_name='Статус', attribute='status')
-    last_name = fields.Field(column_name='Фамилия', attribute='last_name')
+    surname = fields.Field(column_name='Фамилия', attribute='surname')
     name = fields.Field(column_name='Имя', attribute='name')
-    second_name = fields.Field(column_name='Отчество', attribute='second_name')
+    patronymic = fields.Field(column_name='Отчество', attribute='patronymic')
     department = fields.Field(column_name='Отдел', attribute='department')
 
     def get_instance(self, instance_loader, row):
@@ -29,5 +29,8 @@ class RawEventResource(resources.ModelResource):
 
     class Meta:
         model = RawEvent
-        fields = ('datetime','controller','action_type','card_number','status','last_name','name','second_name','department',)
+        skip_unchanged = True
+        report_skipped = False
+        fields = ('datetime', 'controller', 'action_type', 'card_number', 'status', 'surname', 'name', 'patronymic',
+                  'department',)
         export_order = fields

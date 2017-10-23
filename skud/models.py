@@ -11,16 +11,16 @@ class Department(models.Model):
         verbose_name_plural = "Департаменты"
 
 class Employee(models.Model):
-    name = models.CharField(max_length = 30, verbose_name='Имя', default=None)
-    first_name = models.CharField(max_length = 30, blank=True, null=True, verbose_name='Фамилия')
-    last_name = models.CharField(max_length = 30, blank=True, null=True, verbose_name='Отчество')
+    name = models.CharField(max_length=30, verbose_name='Имя', default=None)
+    surname = models.CharField(max_length=30, blank=True, null=True, verbose_name='Фамилия')
+    patronymic = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
     department = models.ForeignKey(Department, blank=True, null=True, verbose_name='Департамент')
     day_start_datetime = models.TimeField(blank=True, null=True, verbose_name='Время начала рабочего дня')
     day_end_datetime = models.TimeField(blank=True, null=True, verbose_name='Время окончания рабочего дня')
     card_number = models.CharField(max_length=50, verbose_name='Номер карты', null=True)
 
     def __str__(self):
-        return self.name
+        return '{} {}'.format(self.name, self.surname)
 
     class Meta:
         verbose_name = "Сотрудник"
@@ -43,28 +43,30 @@ class RawEvent(models.Model):
     action_type = models.CharField(max_length=5, choices=ACTION_TYPE_CHOICES, verbose_name='Действие')
     card_number = models.CharField(max_length=100, verbose_name='Номер карты')
     status = models.CharField(max_length=100, null=True, blank=True)
-    last_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='Фамилия')
     name = models.CharField(max_length=100, verbose_name='Имя')
-    second_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='Отчество')
+    surname = models.CharField(max_length=100, blank=True, null=True, verbose_name='Фамилия')
+    patronymic = models.CharField(max_length=100, blank=True, null=True, verbose_name='Отчество')
     department = models.CharField(max_length=100, blank=True, null=True, verbose_name='Департамент')
 
     def __str__(self):
-        return str(self.datetime)
+        return '{} {}'.format(str(self.datetime), str(self.action_type))
 
     class Meta:
         verbose_name = 'Сырые данные: событие'
         verbose_name_plural = 'Сырые данные: события'
 
 class EmployeeSummaryDay(models.Model):
-    date = models.DateField()
-    employee = models.ForeignKey(Employee)
-    department = models.ForeignKey(Department, blank=True, null=True)
-    hours_delay = models.FloatField(blank=True, null=True)
-    hours_way_out = models.FloatField(blank=True, null=True)
-    hours_duration = models.FloatField(blank=True, null=True)
+    date = models.DateField(verbose_name='Дата')
+    employee = models.ForeignKey(Employee, verbose_name='Сотрудник')
+    department = models.ForeignKey(Department, blank=True, null=True, verbose_name='Департамент')
+    first_enter = models.TimeField(blank=True, null=True, editable=False, verbose_name='Время первого входа')
+    last_exit = models.TimeField(blank=True, null=True, editable=False, verbose_name='Время последнего выхода')
+    hours_delay = models.FloatField(blank=True, null=True, editable=False, verbose_name='Часов опоздания')
+    hours_way_out = models.FloatField(blank=True, null=True, editable=False, verbose_name='Часов вне офиса')
+    hours_duration = models.FloatField(blank=True, null=True, editable=False, verbose_name='Часов от входа до выхода')
 
     def __str__(self):
-        return self.employee
+        return self.employee.surname
 
     class Meta:
         verbose_name = "Summary по сотруднику за день"

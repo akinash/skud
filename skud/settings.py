@@ -35,19 +35,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'skud',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'skud',
     'import_export',
-    'djcelery',
-    'celery_haystack',
-    'django_celery_results',
     'raven.contrib.django.raven_compat',
     'redis',
+    'rangefilter',
+    'django_admin_listfilter_dropdown'
 ]
 
 MIDDLEWARE = [
@@ -79,9 +78,9 @@ TEMPLATES = [
     },
 ]
 
-# TEMPLATE_DIRS = (
-#     os.path.join(os.path.dirname(__file__), 'templates').replace('\\', '/'),
-# )
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\', '/'),
+)
 
 WSGI_APPLICATION = 'skud.wsgi.application'
 
@@ -132,13 +131,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -196,3 +195,5 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=10)
     },
 }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
