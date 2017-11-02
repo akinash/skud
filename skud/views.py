@@ -1,7 +1,11 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 import datetime
+from django.contrib.auth.decorators import login_required, permission_required
 
-def hello(request):
-    now = datetime.datetime.now()
-    name = 'ARTEM'
-    return render_to_response('date/current_datetime.html', locals())
+@login_required
+def index(request):
+    return render(
+        request,
+        'index.html',
+        context={},
+    )

@@ -78,10 +78,6 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), 'templates').replace('\\', '/'),
-)
-
 WSGI_APPLICATION = 'skud.wsgi.application'
 
 
@@ -197,3 +193,5 @@ CELERYBEAT_SCHEDULE = {
 }
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
+
+LOGIN_URL = '/login/'
